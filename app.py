@@ -224,6 +224,12 @@ class GenresView(Resource):
     def get(self):
         result = db.session.query(Genre).all()
         return genres_schema.dump(result), 200
+    def post(self):
+        req_genre = request.json
+        new_genre = Genre(**req_genre)
+        with db.session.begin():
+            db.session.add(new_genre)
+        return "", 201
 
 
 @genres_ns.route('/<int:uid>')
